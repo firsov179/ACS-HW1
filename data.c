@@ -4,6 +4,11 @@ int main() {
     int n;
     scanf("%d", &n);
 
+    if (n < 1 || (n & 1) == 1 || n > 100) {
+        printf("Incorrect length = %d\n", n);
+        return 0;
+    }
+
     int A[n], B[n];
     for (int i = 0; i < n; ++i) {
         scanf("%d", &A[i]); // считываем исходный массив

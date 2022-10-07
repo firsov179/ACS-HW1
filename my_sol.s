@@ -35,15 +35,19 @@ main:
     lea     rsi, length[rip]        #  адрес для ввода
     mov     eax, 0                  # ввод целых чисел
     call    scanf@PLT
-    # Проверка значения введенной длины
-    cmp     dword ptr length[rip], 1
+    cmp     dword ptr length[rip], 1           # если length < 1, то ввод некорректный
     jl      incorrect_length
-    # если length < выделенной области, то ввод корректный
-    cmp     dword ptr length[rip], max_size   
+    mov     r11, length[rip]                    # то ввод некорректный
+    and     r11, 1
+    cmp     r11, 1
+    jge     incorrect_length                    # если length нечетное, то ввод некоректный 
     mov     r11, 0
+    cmp     dword ptr length[rip], max_size   # если > выделенной области
     jle     loop_scan
+    
 incorrect_length: 
     # если length < 1 или length > max_size, то ввод некоректный
+    # если length нечетное, то ввод некоректный
     lea     rdi, message_incorrect_length[rip]
     mov     rsi, length[rip]
     mov     eax, 0
