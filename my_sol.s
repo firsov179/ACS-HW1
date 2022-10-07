@@ -8,12 +8,14 @@ message_incorrect_length:
     .string      "Incorrect length = %d\n"
 format_in:
     .string      "%d"
-end_msg:
-    .string      "\n"
+B_msg:
+    .string      "\nB:"
+A_msg:
+    .string      "A:"
 format_A_i:
-    .string      "A[%d] = %d "
+    .string      " %d"
 format_B_i:
-    .string      "B[%d] = %d "
+    .string      " %d"
 
     .section .data
 array:
@@ -109,6 +111,9 @@ finish:
      
      
 start_loop_print_A:
+
+    lea     rdi, A_msg
+    call    printf@PLT # Выводим конец строки
     mov r11, 0
 
 
@@ -119,9 +124,8 @@ loop_print_A:
     cmp     r11, length[rip]
     jge     start_loop_print_B
     lea     rdi, format_A_i[rip]     # формат вывода
-    mov     rdx, [r11*4+rbx]         # выводимое число
+    mov     rsi, [r11*4+rbx]         # выводимое число
     mov     eax, 0                  
-    mov     rsi, r11                 # индекс числа  
     push    r11
     push    rbx  
     call    printf@PLT
@@ -131,7 +135,7 @@ loop_print_A:
     jmp     loop_print_A
     
 start_loop_print_B:
-    lea     rdi, end_msg
+    lea     rdi, B_msg
     call    printf@PLT # Выводим конец строки
     mov     r11, 0
 loop_print_B:
@@ -141,9 +145,8 @@ loop_print_B:
     cmp     r11, length[rip]
     jge     end
     lea     rdi, format_B_i[rip]     # формат вывода
-    mov     rdx, [r11*4+rbx]         # выводимое число
+    mov     rsi, [r11*4+rbx]         # выводимое число
     mov     eax, 0                  
-    mov     rsi, r11                 # индекс числа
     push    r11
     push    rbx 
     call    printf@PLT
@@ -152,8 +155,6 @@ loop_print_B:
     inc     r11
     jmp     loop_print_B
 end:
-    lea     rdi, end_msg
-    call    printf@PLT # Выводим конец строки
     mov     eax, 0
     mov     rsp, rbp            # удалить локальные переменные
     pop     rbp                 # восстановить кадр вызывающего
