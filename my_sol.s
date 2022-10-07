@@ -122,7 +122,6 @@ start_loop_print_A:
 
 loop_print_A: 
     # Вывод A
-    mov     edx, length[rip]
     lea     rbx, array[rip]
     cmp     r11, length[rip]
     jge     start_loop_print_B
@@ -143,7 +142,6 @@ start_loop_print_B:
     mov     r11, 0
 loop_print_B:
     # Вывод B
-    mov     edx, length[rip]
     lea     rbx, array_B[rip]
     cmp     r11, length[rip]
     jge     end
