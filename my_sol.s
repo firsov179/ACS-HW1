@@ -70,9 +70,10 @@ loop_scan:
     jmp     loop_scan
 
 start_change_array:
-    mov     r11, 0
-    mov     r14, 0
+    mov     r11, 0 # Индексатор для прохода по массиву
+    mov     r14, 0 # Четность r11
 start:
+    # Получание В из А
     lea     r12, array[rip]
     lea     r13, array_B[rip]
     cmp     r11, length[rip]
@@ -84,6 +85,7 @@ start:
 
     
 even:
+    #  Элемент с позиции A[2n + 1] -> B[2n]
     mov     eax, dword ptr [r11*4+r12]
     dec r11
     mov     dword ptr [r11*4+r13], eax
@@ -91,6 +93,7 @@ even:
     jmp     finish
     
 odd:
+    #  Элемент с позиции A[2n] -> B[2n + 1]
     mov     eax, dword ptr [r11*4+r12]
     inc r11
     mov     dword ptr [r11*4+r13], eax
@@ -98,6 +101,7 @@ odd:
     jmp     finish
     
 finish:
+    # Переход к новому элементу
     inc     r11
     inc     r14
     and     r14, 1
@@ -109,6 +113,7 @@ start_loop_print_A:
 
 
 loop_print_A: 
+    # Вывод A
     mov     edx, length[rip]
     lea     rbx, array[rip]
     cmp     r11, length[rip]
@@ -127,10 +132,10 @@ loop_print_A:
     
 start_loop_print_B:
     lea     rdi, end_msg
-    call    printf@PLT
+    call    printf@PLT # Выводим конец строки
     mov     r11, 0
 loop_print_B:
-
+    # Вывод B
     mov     edx, length[rip]
     lea     rbx, array_B[rip]
     cmp     r11, length[rip]
@@ -146,9 +151,9 @@ loop_print_B:
     pop     r11
     inc     r11
     jmp     loop_print_B
-
-
 end:
+    lea     rdi, end_msg
+    call    printf@PLT # Выводим конец строки
     mov     eax, 0
     mov     rsp, rbp            # удалить локальные переменные
     pop     rbp                 # восстановить кадр вызывающего
