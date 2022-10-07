@@ -12,11 +12,10 @@ B_msg:
     .string      "\nB:"
 A_msg:
     .string      "A:"
-format_A_i:
+format_elem:
     .string      " %d"
-format_B_i:
-    .string      " %d"
-
+end_msg:
+    .string      "\n"
     .section .data
 array:
     .space max_size * int_size # выделяем память для массива A
@@ -112,7 +111,7 @@ finish:
      
 start_loop_print_A:
 
-    lea     rdi, A_msg
+    lea     rdi, A_msg[rip]
     call    printf@PLT # Выводим конец строки
     mov r11, 0
 
@@ -123,7 +122,7 @@ loop_print_A:
     lea     rbx, array[rip]
     cmp     r11, length[rip]
     jge     start_loop_print_B
-    lea     rdi, format_A_i[rip]     # формат вывода
+    lea     rdi, format_elem[rip]     # формат вывода
     mov     rsi, [r11*4+rbx]         # выводимое число
     mov     eax, 0                  
     push    r11
@@ -135,8 +134,8 @@ loop_print_A:
     jmp     loop_print_A
     
 start_loop_print_B:
-    lea     rdi, B_msg
-    call    printf@PLT # Выводим конец строки
+    lea     rdi, B_msg[rip]
+    call    printf@PLT
     mov     r11, 0
 loop_print_B:
     # Вывод B
@@ -144,7 +143,7 @@ loop_print_B:
     lea     rbx, array_B[rip]
     cmp     r11, length[rip]
     jge     end
-    lea     rdi, format_B_i[rip]     # формат вывода
+    lea     rdi, format_elem[rip]     # формат вывода
     mov     rsi, [r11*4+rbx]         # выводимое число
     mov     eax, 0                  
     push    r11
@@ -154,7 +153,9 @@ loop_print_B:
     pop     r11
     inc     r11
     jmp     loop_print_B
-end:
+end: 
+    lea     rdi, end_msg[rip]
+    call    printf@PLT
     mov     eax, 0
     mov     rsp, rbp            # удалить локальные переменные
     pop     rbp                 # восстановить кадр вызывающего

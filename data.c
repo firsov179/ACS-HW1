@@ -25,5 +25,6 @@ int main() {
     for (int i = 0; i < n; ++i) {
         printf("%d ", B[i]); // выводим полученный массив
     }
+    printf("\n");
     return 0;
 }
