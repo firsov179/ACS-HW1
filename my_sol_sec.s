@@ -1,6 +1,6 @@
     .intel_syntax noprefix
 
-    .equ    max_size, 100                     # максимально разрешенная длина массива
+    .equ    max_size, 1000                     # максимально разрешенная длина массива
     .equ    int_size, 4
 
     .section .rodata

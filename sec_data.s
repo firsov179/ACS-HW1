@@ -165,7 +165,7 @@ main:
 	test	eax, eax
 	jne	.L13
 	mov	eax, DWORD PTR -92[rbp]
-	cmp	eax, 100
+	cmp	eax, 1000
 	jle	.L14
 .L13:
 	mov	eax, DWORD PTR -92[rbp]
