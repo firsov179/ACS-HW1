@@ -240,7 +240,7 @@ main:
     mov r12, rdi
     mov r13, rsi
 
-    #cmp r12, 3                                # проверка количества аргументов
+    cmp r12, 3                                # проверка количества аргументов
     je next
     lea     rdi, errMessage[rip]
     xor     eax, eax
